@@ -1,0 +1,17 @@
+{
+	"name": "IBM-Device",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"systeminformation": "*",
+		"blessed": "*",
+		"blessed-contrib": "*"
+	},
+	"repository": {},
+	"engines": {
+		"node": "11.5.0"
+	}
+}
