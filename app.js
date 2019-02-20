@@ -1,69 +1,33 @@
-var blessed = require('blessed');
-var contrib = require('blessed-contrib');
+var GUI = require('./GUI/gui.js');
 var hw = require('systeminformation');
+var IoTDevice = require ('./device/device.js');
+var cfenv = require('cfenv');
+var GUI_ctrl = new GUI();
 
-screen = blessed.screen();
-var grid = new contrib.grid({
-  rows: 12,
-  cols: 12,
-  screen: screen
-});
+var app_env = cfenv.getAppEnv({vcapFile: 'KTH-Demo_vcap.json'});
+var credentials = app_env.getServiceCreds("Internet of Things Platform-bd");
+var device = new IoTDevice(credentials.org, process.env.device);
 
-function LineChartConfig(label) {
-  this.style = {
-    line: "blue",
-    text: "green",
-    baseline: "black"
-  };
-  this.xLabelPadding = 3;
-  this.xPadding = 5;
-  this.label = label;
+setInterval(() => Transmit(), 3000);
+async function Transmit() {
+  var that = this;
+  var temp, speed;
+
+  await hw.cpuTemperature().then(cpu_temp => {
+    that.temp = cpu_temp.main;
+    GUI_ctrl.cpu_temp.PushData(that.temp);
+  }).catch();
+  await hw.cpuCurrentspeed().then(cpu_speed => {
+    that.speed = cpu_speed.avg;
+    GUI_ctrl.cpu_speed.PushData(that.speed);
+  }).catch();
+
+  /* 
+   * This pushes / publishes data to Watson IoT, check device/device.js for
+   * more details!
+   */
+  device.Push('cpu_temp', {temp: this.temp, speed: this.speed});
+  GUI_ctrl.log.log(`Transmitted: ${this.temp} temp, ${this.speed} Ghz!`);
+  GUI_ctrl.Render();
 }
-
-var temp_chart_config = new LineChartConfig('Temperature');
-var cpu_chart_config = new LineChartConfig('CPU Speed');
-
-var map = grid.set(0, 0, 8, 12, contrib.map, {label: 'Device Map'})
-var temp_chart = grid.set(8, 0, 4, 6, contrib.line, temp_chart_config);
-var speed_chart = grid.set(8, 6, 4, 6, contrib.line, cpu_chart_config);
-
-var temp_data = {
-   x: [],
-   y: []
-};
-
-var speed_data = {
-   x: [],
-   y: []
-};
-
-temp_chart.setData([temp_data]);
-speed_chart.setData([speed_data]);
-map.addMarker({"lon" : "-79.0000", "lat" : "37.5000", color: "red", char: "X" })
-
-screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-  return process.exit(0);
-});
-
-setInterval(() => SendData(), 2000);
-/* Send spoofed data. */
-async function SendData() {
-  var time = new Date();
-  time = time.getMinutes().toString() + ':' + time.getSeconds().toString();
-  
-  hw.cpuTemperature().then(cpu_temp => {
-    temp_data.x.push(time);
-    temp_data.y.push(cpu_temp.main);
-  });
-  hw.cpuCurrentspeed().then(cpu_speed => {
-    speed_data.x.push(time);
-    speed_data.y.push(cpu_speed.avg);
-  });
-
-  temp_chart.setData([temp_data]);
-  speed_chart.setData([speed_data]);
-  screen.render();
-}
-
-screen.render();
-
+GUI_ctrl.log.log(`Initialized!`);
