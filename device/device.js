@@ -4,7 +4,7 @@ class Device {
     const device_config = {
       "org": org,
       "domain": "internetofthings.ibmcloud.com",
-      "type": "IBM-KTH-Demo",
+      "type": "IBM-KTH",
       "id": "0",
       "auth-method": "token",
       "auth-token": token,
