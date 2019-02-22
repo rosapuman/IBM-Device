@@ -15,7 +15,7 @@ class Device {
   }
   
   Push(id, data) {
-    this.device.publish(id, 'json', JSON.stringify(data), 0);
+    this.device.publishHTTPS(id, 'json', JSON.stringify(data), 0);
   }
   
   _setup() {

@@ -4,9 +4,16 @@ var IoTDevice = require ('./device/device.js');
 var cfenv = require('cfenv');
 var GUI_ctrl = new GUI();
 
-var app_env = cfenv.getAppEnv({vcapFile: 'KTH-Demo_vcap.json'});
-var credentials = app_env.getServiceCreds("IoT");
-var device = new IoTDevice(credentials.org, process.env.device);
+/* Edit these lines to reflect your IoT platform config. */
+const ORG_ID = "ORGANISATION";
+const ACCESS_TOKEN = "ACCESS TOKEN HERE";
+var device = new IoTDevice(ORG_ID, ACCESS_TOKEN);
+
+/* We will uncomment these later. */
+//const IOT_PLATFORM = "NAME";
+//var app_env = cfenv.getAppEnv({vcapFile: 'vcap.json'});
+//const credentials = app_env.getServiceCreds(IOT_PLATFORM);
+//var device = new IoTDevice(credentials.org, process.env.device);
 
 setInterval(() => Transmit(), 3000);
 async function Transmit() {
@@ -32,4 +39,5 @@ async function Transmit() {
   GUI_ctrl.log.log(`Transmitted: ${this.temp} temp, ${this.speed} Ghz!`);
   GUI_ctrl.Render();
 }
+
 GUI_ctrl.log.log(`Initialized!`);
