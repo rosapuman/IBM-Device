@@ -9,12 +9,6 @@ const ORG_ID = "ORGANISATION";
 const ACCESS_TOKEN = "ACCESS TOKEN HERE";
 var device = new IoTDevice(ORG_ID, ACCESS_TOKEN);
 
-/* We will uncomment these later. */
-//const IOT_PLATFORM = "NAME";
-//var app_env = cfenv.getAppEnv({vcapFile: 'vcap.json'});
-//const credentials = app_env.getServiceCreds(IOT_PLATFORM);
-//var device = new IoTDevice(credentials.org, process.env.device);
-
 setInterval(() => Transmit(), 3000);
 async function Transmit() {
   var that = this;

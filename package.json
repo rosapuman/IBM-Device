@@ -6,8 +6,8 @@
 		"start": "node app.js"
 	},
 	"dependencies": {
-		"blessed": "^0.1.81",
-		"blessed-contrib": "^4.8.10",
+		"blessed": "0.1.81",
+		"blessed-contrib": "4.8.11",
 		"cfenv": "^1.1.0",
 		"ibmiotf": "*",
 		"systeminformation": "*"
