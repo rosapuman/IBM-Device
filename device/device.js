@@ -29,12 +29,13 @@ class Device {
     /* When your device has connected, setup listeners and callbacks. */
     this.device.on('connect', function(parent){
       that.device_connected = true;
-      /* We will skip managed devices for now. */
-      //var rc = device_client.manage(4000, false, true);
+	    var rc = that.device.manage(0, true, true);
       
-      /* We have no action, however you can setup action listeners. */
       that.device.on('dmAction', function(request){
-        console.log('Action : ' + request.Action);
+        console.log('Action : ' + request.action);
+        that.device.respondDeviceAction(request,
+                                        that.device.RESPONSECODE.FUNCTION_NOT_SUPPORTED, 
+                                        "Function not supported");
       });
       
       /* If the device disconnects, we do not need to panic. */

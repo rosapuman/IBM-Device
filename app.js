@@ -10,15 +10,16 @@ const ACCESS_TOKEN = "ACCESS TOKEN HERE";
 var device = new IoTDevice(ORG_ID, ACCESS_TOKEN);
 
 setInterval(() => Transmit(), 3000);
-async function Transmit() {
+function Transmit() {
   var that = this;
-  var temp, speed;
+  var temp = 0;
+  var speed = 0;
 
-  await hw.cpuTemperature().then(cpu_temp => {
+  hw.cpuTemperature().then(cpu_temp => {
     that.temp = cpu_temp.main;
     GUI_ctrl.cpu_temp.PushData(that.temp);
   }).catch();
-  await hw.cpuCurrentspeed().then(cpu_speed => {
+  hw.cpuCurrentspeed().then(cpu_speed => {
     that.speed = cpu_speed.avg;
     GUI_ctrl.cpu_speed.PushData(that.speed);
   }).catch();
