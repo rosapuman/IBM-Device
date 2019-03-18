@@ -29,7 +29,7 @@ class Device {
     /* When your device has connected, setup listeners and callbacks. */
     this.device.on('connect', function(parent){
       that.device_connected = true;
-	    var rc = that.device.manage(3600, true, true);
+      var rc = that.device.manage(3600, true, true);
       
       that.device.on('dmAction', function(request){
         console.log('Action : ' + request.action);
