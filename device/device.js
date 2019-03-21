@@ -29,6 +29,7 @@ class Device {
     /* When your device has connected, setup listeners and callbacks. */
     this.device.on('connect', function(parent){
       that.device_connected = true;
+/*    
       var rc = that.device.manage(3600, true, true);
       
       that.device.on('dmAction', function(request){
@@ -37,7 +38,7 @@ class Device {
                                         that.device.RESPONSECODE.FUNCTION_NOT_SUPPORTED, 
                                         "Function not supported");
       });
-      
+ */     
       /* If the device disconnects, we do not need to panic. */
       that.device.on('disconnect', function(){
         that.device_connected = false;
