@@ -5,8 +5,8 @@ var cfenv = require('cfenv');
 var GUI_ctrl = new GUI();
 
 /* Edit these lines to reflect your IoT platform config. */
-const ORG_ID = "ORGANISATION";
-const ACCESS_TOKEN = "ACCESS TOKEN HERE";
+const ORG_ID = "yk7g3z";
+const ACCESS_TOKEN = "my-secret-token";
 var device = new IoTDevice(ORG_ID, ACCESS_TOKEN);
 
 setInterval(() => Transmit(), 3000);
